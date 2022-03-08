@@ -11,20 +11,30 @@ import { appTheme } from './common';
 import {AppRoute} from '../../const';
 import * as S from './app.styled';
 import NotFound from '../not-found/not-found';
+import PageDevelopment from '../page-development/page-development';
 
 const App = () => (
   <ThemeProvider theme={appTheme}>
     <S.GlobalStyle />
     <Router>
       <Switch>
+        <Route exact path={AppRoute.Home}>
+          <Home />
+        </Route>
         <Route exact path={AppRoute.Quests}>
           <DetailedQuest />
         </Route>
+        <Route exact path={AppRoute.Beginners}>
+          <PageDevelopment />
+        </Route>
+        <Route exact path={AppRoute.Reviews}>
+          <PageDevelopment />
+        </Route>
+        <Route exact path={AppRoute.Sale}>
+          <PageDevelopment />
+        </Route>
         <Route exact path={AppRoute.Contacts}>
           <Contacts />
-        </Route>
-        <Route path={AppRoute.Home}>
-          <Home />
         </Route>
         <Route>
           <NotFound />

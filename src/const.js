@@ -16,6 +16,9 @@ const AppRoute = {
   Home: '/',
   Quests: '/quests',
   QuestId: '/quests/:id',
+  Beginners: '/beginners',
+  Reviews: '/reviews',
+  Sale: '/sale',
   Contacts: '/contacts',
 };
 
