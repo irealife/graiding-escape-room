@@ -14,7 +14,7 @@ const schema = yup.object().shape({
   isLegal: yup.bool().oneOf([true], 'Подтвердите согласие на обработку персональных данных'),
 }).required();
 
-const BookingModal = ({onCloseBtnClick}) => {
+function BookingModal({onCloseBtnClick}) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const {register, formState: {errors}, onSubmit} = useForm({
     mode: 'all',

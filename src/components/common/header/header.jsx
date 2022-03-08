@@ -1,10 +1,10 @@
 import React from 'react';
-import logo from 'assets/img/logo.svg';
+import logo from '../../../assets/img/logo.svg';
 import * as S from './header.styled';
 import {AppRoute} from '../../../const';
-import {useLocation} from 'react-router';
+import {useLocation} from 'react-router-dom';
 
-const Header = () => {
+function Header () {
   const location = useLocation();
   const handleLogoClick = (evt) => {
     if (location.pathname === AppRoute.Home) {
@@ -29,19 +29,19 @@ const Header = () => {
         <S.Navigation>
           <S.Links>
             <S.LinkItem>
-              <S.Link exact to={AppRoute.Home}>Квесты</S.Link>
+              <S.NavLink exact to={AppRoute.Home}>Квесты</S.NavLink>
             </S.LinkItem>
             <S.LinkItem>
-              <S.Link to={AppRoute.Beginners}>Новичкам</S.Link>
+              <S.NavLink to={AppRoute.Beginners}>Новичкам</S.NavLink>
             </S.LinkItem>
             <S.LinkItem>
-              <S.Link to={AppRoute.Reviews}>Отзывы</S.Link>
+              <S.NavLink to={AppRoute.Reviews}>Отзывы</S.NavLink>
             </S.LinkItem>
             <S.LinkItem>
-              <S.Link to={AppRoute.Sale}>Акции</S.Link>
+              <S.NavLink to={AppRoute.Sale}>Акции</S.NavLink>
             </S.LinkItem>
             <S.LinkItem>
-              <S.Link to={AppRoute.Contacts}>Контакты</S.Link>
+              <S.NavLink to={AppRoute.Contacts}>Контакты</S.NavLink>
             </S.LinkItem>
           </S.Links>
         </S.Navigation>
