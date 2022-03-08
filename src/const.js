@@ -1,5 +1,7 @@
 const BACKEND_URL = 'http://localhost:3001';
 
+console.log(BACKEND_URL);
+
 const Backend = {
   GetQuests: () => `${BACKEND_URL}/quests`,
   GetQuest: (id) => `${BACKEND_URL}/quests/$id`,
@@ -15,6 +17,10 @@ const AppRoute = {
   Quests: '/quests',
   QuestId: '/quests/:id',
   Contacts: '/contacts',
+};
+
+const RequestStatus = {
+
 };
 
 export {
