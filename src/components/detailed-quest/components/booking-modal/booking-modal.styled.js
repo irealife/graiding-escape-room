@@ -210,6 +210,10 @@ const BookingLegalLink = styled.a`
   text-decoration: underline;
 `;
 
+const BookingErrorText = styled.span`
+  color: ${({ theme }) => theme.color.red};
+`;
+
 export {
   BlockLayer,
   Modal,
@@ -226,4 +230,5 @@ export {
   BookingCheckboxInput,
   BookingCheckboxText,
   BookingLegalLink,
+  BookingErrorText,
 };
