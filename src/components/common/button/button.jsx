@@ -1,8 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as S from './button.styled';
 
-const Button = ({ children, ...props }) => (
-  <S.Button {...props}>{children}</S.Button>
-);
+function Button({ children, ...props }) {
+  return <S.Button {...props}>{children}</S.Button>;
+}
+
+Button.propTypes = {
+  children: PropTypes.node,
+};
 
 export default Button;

@@ -1,7 +1,13 @@
 import * as S from './page-subtext.styled';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const PageSubtext = ({ children, ...props }) => (
-  <S.PageSubtext {...props}>{children}</S.PageSubtext>
-);
+function PageSubtext({children, ...props}) {
+  return <S.PageSubtext {...props}>{children}</S.PageSubtext>;
+}
+
+PageSubtext.propTypes = {
+  children: PropTypes.node,
+};
 
 export default PageSubtext;
