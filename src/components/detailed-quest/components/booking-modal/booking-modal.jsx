@@ -1,28 +1,50 @@
 import React, {useState, useCallback, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {postOrderAction} from '../../../../store/api-actions';
+import {setReviewRequestStatus} from '../../../../store/actions';
+import {getReviewRequestStatus} from '../../../../utils';
 import {isValidPhoneNumber} from 'react-phone-number-input';
 import {useForm} from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
 import * as S from './booking-modal.styled';
-import { ReactComponent as IconClose } from 'assets/img/icon-close.svg';
+import {ReactComponent as IconClose} from 'assets/img/icon-close.svg';
+import {RequestStatus} from '../../../../const';
 
 const schema = yup.object().shape({
-  name: yup.string().required('Введите имя'),
-  phone: yup.string().test('test-phone', 'Введите номер телефона', (value) => isValidPhoneNumber(value, 'RU'),).required(),
-  peopleCount: yup.number().positive('Количество участников должно быть больше 0').integer('Количество участников должно быть целым').typeError('Введите количество участников').required(),
-  isLegal: yup.bool().oneOf([true], 'Подтвердите согласие на обработку персональных данных'),
+  name: yup
+    .string()
+    .trim()
+    .required('Введите имя'),
+  phone: yup
+    .string()
+    .test(
+      'test-phone',
+      'Введите номер телефона',
+      (value) => isValidPhoneNumber(value, 'RU'),
+    )
+    .required(),
+  peopleCount: yup
+    .number()
+    .positive('Количество участников должно быть больше 0')
+    .typeError('Введите количество участников')
+    .required(),
+  isLegal: yup
+    .bool()
+    .oneOf([true], 'Подтвердите согласие на обработку персональных данных'),
 }).required();
 
 function BookingModal({onCloseBtnClick}) {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const {register, formState: {errors}, onSubmit} = useForm({
+  const reviewRequestStatus = useSelector(getReviewRequestStatus);
+  const [, setPhoneNumber] = useState('');
+  const {register, formState: {errors}, handleSubmit} = useForm({
     mode: 'all',
     resolver: yupResolver(schema),
   });
+  const dispatch = useDispatch();
   const handleDataFetch = (data) => {
-    // eslint-disable-next-line no-console
-    console.log({ ...data, phone: phoneNumber.replace(/\D/g, '').slice(-10) });
+    dispatch(postOrderAction({ ...data}));
   };
   const handlePhoneNumberClick = (evt) => {
     if (!/[0-9]/.test(evt.key)) {
@@ -41,6 +63,14 @@ function BookingModal({onCloseBtnClick}) {
       document.removeEventListener('keydown', handleEscKeyDown);
     };
   }, [handleEscKeyDown]);
+  useEffect(() => {
+    if (reviewRequestStatus === RequestStatus.Success) {
+      dispatch(setReviewRequestStatus(RequestStatus.Unknown));
+      document.removeEventListener('keydown', handleEscKeyDown);
+      onCloseBtnClick(false);
+    }
+  }, [dispatch, handleEscKeyDown, onCloseBtnClick, reviewRequestStatus]);
+
   return (
     <S.BlockLayer>
       <S.Modal>
@@ -53,7 +83,7 @@ function BookingModal({onCloseBtnClick}) {
         <S.ModalTitle>Оставить заявку</S.ModalTitle>
         <S.BookingForm
           noValidate
-          onSubmit={onSubmit(handleDataFetch)}
+          onSubmit={handleSubmit(handleDataFetch)}
           action="https://echo.htmlacademy.ru"
           method="post"
           id="booking-form"
@@ -64,7 +94,7 @@ function BookingModal({onCloseBtnClick}) {
               {...register('name')}
               type="text"
               id="booking-name"
-              name="booking-name"
+              name="name"
               placeholder="Имя"
               required
             />
@@ -80,10 +110,8 @@ function BookingModal({onCloseBtnClick}) {
               {...register('phone')}
               type="tel"
               id="booking-phone"
-              name="booking-phone"
+              name="phone"
               placeholder="Телефон"
-              defaultCountry="RU"
-              value={phoneNumber}
               onChange={setPhoneNumber}
               required
             />
@@ -100,7 +128,7 @@ function BookingModal({onCloseBtnClick}) {
               onKeyPress={handlePhoneNumberClick}
               type="number"
               id="booking-people"
-              name="booking-people"
+              name="peopleCount"
               placeholder="Количество участников"
               required
             />
@@ -114,7 +142,7 @@ function BookingModal({onCloseBtnClick}) {
               {...register('isLegal')}
               type="checkbox"
               id="booking-legal"
-              name="booking-legal"
+              name="isLegal"
               required
             />
             {errors.isLegal && (
